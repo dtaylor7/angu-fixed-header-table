@@ -26,6 +26,12 @@
                 }
             });
 
+            $scope.$watch('panelClosed', function(isTableDataLoaded) {
+                $timeout(function(){
+                    transformTable();
+                }, 700)
+            });
+
             function tableDataLoaded() {
                 // first cell in the tbody exists when data is loaded but doesn't have a width
                 // until after the table is transformed
@@ -36,6 +42,7 @@
             function transformTable() {
                 // reset display styles so column widths are correct when measured below
                 angular.element(elem.querySelectorAll('thead, tbody, tfoot')).css('display', '');
+                angular.element(elem.querySelectorAll('th, td')).css('width', '').css('min-width', '');
 
                 // wrap in $timeout to give table a chance to finish rendering
                 $timeout(function () {
@@ -48,12 +55,15 @@
                         var columnWidth = tdElems ? tdElems.offsetWidth : thElem.offsetWidth;
                         if (tdElems) {
                             tdElems.style.width = columnWidth + 'px';
+                            tdElems.style.minWidth = columnWidth + 'px';
                         }
                         if (thElem) {
                             thElem.style.width = columnWidth + 'px';
+                            thElem.style.minWidth = columnWidth + 'px';
                         }
                         if (tfElems) {
                             tfElems.style.width = columnWidth + 'px';
+                            tfElems.style.minWidth = columnWidth + 'px';
                         }
                     });
 
